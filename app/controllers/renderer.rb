@@ -1,0 +1,1 @@
+module ActionController::ApiRendering; include ActionView::Rendering; end
