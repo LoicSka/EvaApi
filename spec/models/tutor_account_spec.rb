@@ -20,7 +20,7 @@ RSpec.describe TutorAccount, type: :model do
       expect(tutor_account).to validate_inclusion_of(:gender).in_array(%w{ male female })
     end
 
-    it 'requires a valid date of bith' do
+    it 'requires a valid date of birth' do
       expect(tutor_account).to_not allow_value(Time.now + 2.days).for(:dob)
     end
 

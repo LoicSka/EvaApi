@@ -16,7 +16,7 @@ class Api::V1::TutorAccountsController < Api::V1::BaseController
   end
 
   def update
-    @tutor_account.update(tutor_account_params)
+    @tutor_account.update(tutor_accounts_params)
   end
 
   def destroy

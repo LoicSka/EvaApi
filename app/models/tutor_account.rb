@@ -10,7 +10,7 @@ class TutorAccount
   field :wechat_url,            type: String
   field :occupation,            type: String
   field :days_available,        type: Array, default: []
-  field :state,                 type: String
+  field :state,                 type: String, default: 'trial'
   field :renewed_at,            type: Time
   field :expiring_at,           type: Time
   field :membership,            type: String
@@ -18,7 +18,11 @@ class TutorAccount
   # relationships
   belongs_to  :user
   has_many    :reviews, dependent: :destroy
+  has_many    :courses, dependent: :destroy
   belongs_to  :region
+
+  # scopes
+  scope :sorted, -> { order_by(:created_at => 'desc') }
 
   # validations
   validates :introduction,   presence: true,
@@ -39,7 +43,9 @@ class TutorAccount
                              inclusion: { in: %w{ trial inactive active deactivated }}
 
   def validate_dob
-    errors.add(:dob, 'date of birth cannot be in the future.') if dob > Time.now
+    if dob.present?
+      errors.add(:dob, 'date of birth cannot be in the future.') if dob > Time.now
+    end
   end
 
   def validate_days_available

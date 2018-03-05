@@ -9,6 +9,9 @@ class Booking
   belongs_to  :user
   belongs_to  :course
 
+  # scopes
+  scope :sorted, -> { order_by(:created_at => 'desc') }
+
   # validations
   validates :time, presence: true,
                    enum: { presence: true }

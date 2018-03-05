@@ -10,12 +10,14 @@ class Region
   # relationships
   has_many :tutor_accounts
 
+  # scopes
+  scope :sorted, -> { order_by(:created_at => 'desc') }
+
   # validations
   validates :country_name,         presence: true,
                                    length: { maximum: 90 }
   validates :city_name,            presence: true,
                                    length: { maximum: 90 }
-  validates :location,             presence: true
   validates :currency_symbol,      presence: true,
                                    length: { maximum: 1 }
 

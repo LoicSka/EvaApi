@@ -1,35 +1,35 @@
-class Api::V1::TutorAccountsController < Api::V1::BaseController
+class Api::V1::SubjectsController < Api::V1::BaseController
   before_action :set_page, only: [:index]
-  before_action :set_tutor_account, only: [:show, :edit, :update, :destroy]
+  before_action :set_subject, only: [:show, :edit, :update, :destroy]
   before_action :authenticate_user # , except: [:create, :update]
 
   def index
-    @tutor_accounts = params['page_number'].present? ? TutorAccount.sorted.paginate(:page => @page_number, :per_page => @page_size) : TutorAccount.sorted
+    @subjects = params['page_number'].present? ? Subject.sorted.paginate(:page => @page_number, :per_page => @page_size) : Subject.sorted
   end
 
   def show
   end
 
   def create
-    @tutor_account = TutorAccount.new(tutor_accounts_params)
-    @tutor_account.save
+    @subject = Subject.new(subjects_params)
+    @subject.save
   end
 
   def update
-    @tutor_account.update(tutor_account_params)
+    @subject.update(subjects_params)
   end
 
   def destroy
-    @tutor_account.destroy unless @tutor_account.nil?
+    @subject.destroy unless @subject.nil?
   end
 
   private
 
-  def set_tutor_account
-    @tutor_account = TutorAccount.find_where_id(params[:id])
+  def set_subject
+    @subject = Subject.find_where_id(params[:id])
   end
 
-  def tutor_accounts_params
+  def subjects_params
     params.permit(:title)
   end
 end

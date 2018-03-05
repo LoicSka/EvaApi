@@ -16,7 +16,7 @@ class Api::V1::RegionsController < Api::V1::BaseController
   end
 
   def update
-    @region.update(region_params)
+    @region.update(regions_params)
   end
 
   def destroy

@@ -17,7 +17,7 @@ class Api::V1::CoursesController < Api::V1::BaseController
   end
 
   def update
-    @course.update(course_params)
+    @course.update(courses_params)
   end
 
   def destroy
@@ -31,7 +31,7 @@ class Api::V1::CoursesController < Api::V1::BaseController
   end
 
   def courses_params
-    params.permit(:teaching_experience, :age_group, :subject_id, :tutor_account_id)
+    params.permit(:teaching_experience, :title, :age_group, :subject_id, :tutor_account_id)
   end
 
 end

@@ -28,9 +28,9 @@ RSpec.describe User, type: :model do
     end
 
     it 'requires a valid email' do
-      expect(user).to allow_value('dhh@opinionated.com').for(:email_address)
-      expect(user).to_not allow_value('base@example').for(:email_address)
-      expect(user).to_not allow_value('blah').for(:email_address)
+      expect(user).to allow_value('dhh@opinionated.com').for(:email)
+      expect(user).to_not allow_value('base@example').for(:email)
+      expect(user).to_not allow_value('blah').for(:email)
     end
   end
 
@@ -47,8 +47,8 @@ RSpec.describe User, type: :model do
     end
 
     it '.lowercase_email downcases user\'s email' do
-      user.email_address = 'EXAMPLE@yahoo.com'
-      expect{ user.lowercase_email }.to change(user, :email_address).from('EXAMPLE@yahoo.com').to('example@yahoo.com')
+      user.email = 'EXAMPLE@yahoo.com'
+      expect{ user.lowercase_email }.to change(user, :email).from('EXAMPLE@yahoo.com').to('example@yahoo.com')
     end
 
   end
