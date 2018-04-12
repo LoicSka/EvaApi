@@ -1,15 +1,18 @@
 object false
 child @tutor_accounts, :root => "result", :object_root => false do
  attributes :id, :introduction, :gender, :dob, :phone_number, :weibo_url, :wechat_url, :occupation, :days_available, :state, :renewed_at, :expiring_at, :created_at, :updated_at
- node :region do |account|
-    "#{ account.region.city_name }, #{ account.region.country_name }".titleize unless account.region.nil?
+ child :region, :object_root => false do
+     attributes :id, :country_name, :city_name, :location, :currency_symbol
  end
- child :user, :object_root => false do
-    attributes :id, :full_name, :email
+ node(:full_name) do |account|
+    account.user.full_name
  end
  child :courses, :object_root => false do
     attributes :id, :title, :description, :teaching_experience, :age_group, :email
  end
+ child :bookings, :object_root => false do
+     attributes :id, :time, :estimated_cost, :state, :created_at, :updated_at
+  end
 end
 node(:status) { 22000 }
 node(:msg) { "successful" }

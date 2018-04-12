@@ -8,6 +8,7 @@ Rails.application.routes.draw do
       resources :reviews
       resources :tutor_accounts
       resources :regions
+      resources :tags
       resources :user_token
       post '/login' => 'users#login', as: :login
     end

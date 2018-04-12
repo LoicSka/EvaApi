@@ -1,7 +1,7 @@
 class Api::V1::SubjectsController < Api::V1::BaseController
   before_action :set_page, only: [:index]
   before_action :set_subject, only: [:show, :edit, :update, :destroy]
-  before_action :authenticate_user # , except: [:create, :update]
+  before_action :authenticate_user, only: [:create, :update, :destroy]
 
   def index
     @subjects = params['page_number'].present? ? Subject.sorted.paginate(:page => @page_number, :per_page => @page_size) : Subject.sorted

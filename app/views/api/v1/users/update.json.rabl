@@ -1,14 +1,5 @@
 object false
 node(:status) { |m| @user.errors.empty? ? "22000" : "22001" }
 node(:msg) { |m| @user.errors.empty? ? "successful" : "#{@user.errors.keys.first} #{@user.errors.values.first.join}" }
-
-child @user, :if => @user.errors.empty?, :root => "result" do
-    attributes :id, :first_name, :last_name, :email, :created_at, :updated_at
-    child :tutor_account, :object_root => false do
-       attributes :id, :introduction, :gender, :dob, :phone_number, :weibo_url, :wechat_url, :occupation, :days_available, :state, :renewed_at, :expiring_at, :created_at, :updated_at
-       node :region do |account|
-           "#{account.region.city_name}, #{account.region.country_name}".titleize unless account.region.nil?
-       end
-   end
-end
-
+node(:result) { @user.errors.empty? ? (Knock::AuthToken.new payload: @user.attributes.reject {|k,v| ['password_hash', 'avatar'].include?(k)}.merge({full_name: @user.full_name, avatar_url: @user.avatar_url, is_tutor: @user.tutor_account.present?, tutor_account_id: @user.tutor_account.present? ? @user.tutor_account.id : nil, region_id: @user.tutor_account.present? ? @user.tutor_account.region.id : nil, region_name: @user.tutor_account.present? ? "#{@user.tutor_account.region.city_name}, #{@user.tutor_account.region.country_name}" : nil }.merge( @user.tutor_account.present? ? @user.tutor_account.attributes.reject {|k,v| ["_id", "user_id"].include?(k)} : {}))) : nil }
+node(:validations) { @user.errors.messages }

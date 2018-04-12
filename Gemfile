@@ -14,6 +14,7 @@ gem 'oj'
 gem 'knock'
 gem 'will_paginate_mongoid'
 gem 'figaro'
+gem 'mini_magick'
 
 
 group :development, :test do

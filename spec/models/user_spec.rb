@@ -27,6 +27,10 @@ RSpec.describe User, type: :model do
       expect(user).to validate_length_of(:last_name).is_at_most(50)
     end
 
+    it 'requires a unique email' do
+      expect(user).to validate_uniqueness_of(:email)
+    end
+
     it 'requires a valid email' do
       expect(user).to allow_value('dhh@opinionated.com').for(:email)
       expect(user).to_not allow_value('base@example').for(:email)

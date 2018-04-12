@@ -17,7 +17,7 @@ class Api::V1::BookingsController < Api::V1::BaseController
   end
 
   def update
-    @booking.update(booking_params)
+    @booking.update(bookings_params)
   end
 
   def destroy

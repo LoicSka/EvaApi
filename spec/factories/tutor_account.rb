@@ -5,10 +5,11 @@ FactoryBot.define do
     introduction    Faker::HarryPotter.quote
     phone_number    Faker::PhoneNumber.cell_phone
     weibo_url       Faker::Internet.url('weibo.com/users')
-    wechat_url      Faker::Internet.url('wechat.com/users')
+    wechat_id       Faker::HarryPotter.character
     occupation      'professional'
     days_available  []
     state           'active'
+    country_of_origin 'China'
     renewed_at      Time.now
     expiring_at     Time.now + 2.weeks
 

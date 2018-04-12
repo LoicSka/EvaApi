@@ -16,7 +16,7 @@ class Api::V1::ReviewsController < Api::V1::BaseController
   end
 
   def update
-    @review.update(review_params)
+    @review.update(reviews_params)
   end
 
   def destroy

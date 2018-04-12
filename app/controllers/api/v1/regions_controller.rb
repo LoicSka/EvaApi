@@ -1,7 +1,7 @@
 class Api::V1::RegionsController < Api::V1::BaseController
   before_action :set_page, only: [:index]
   before_action :set_region, only: [:show, :edit, :update, :destroy]
-  before_action :authenticate_user # , except: [:create, :update]
+  before_action :authenticate_user , only: [:create, :update, :destroy]
 
   def index
     @regions = params['page_number'].present? ? Region.sorted.paginate(:page => @page_number, :per_page => @page_size) : Region.sorted

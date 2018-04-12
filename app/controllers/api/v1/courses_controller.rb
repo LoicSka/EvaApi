@@ -2,13 +2,15 @@ class Api::V1::CoursesController < Api::V1::BaseController
 
   before_action :set_page, only: [:index]
   before_action :set_course, only: [:show, :edit, :update, :destroy]
-  before_action :authenticate_user # , except: [:create, :update]
+  # before_action :authenticate_user , except: [:create, :update]
 
   def index
     @courses = params['page_number'].present? ? Course.sorted.paginate(:page => @page_number, :per_page => @page_size) : Course.sorted
+    @courses = params['tutor_account_id'].present? ? @courses.where(tutor_account_id: params['tutor_account_id']) : @courses
   end
 
   def show
+
   end
 
   def create
@@ -31,7 +33,7 @@ class Api::V1::CoursesController < Api::V1::BaseController
   end
 
   def courses_params
-    params.permit(:teaching_experience, :title, :age_group, :subject_id, :tutor_account_id)
+    params.permit(:teaching_experience, :expertise, :title, :age_group, :subject, :tutor_account_id, :description, :hourly_rate, tag_ids: [])
   end
 
 end

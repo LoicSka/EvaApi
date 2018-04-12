@@ -37,7 +37,7 @@ RSpec.describe TutorAccount, type: :model do
     end
 
     it 'requires a valid wechat_url' do
-      expect(tutor_account).to validate_length_of(:wechat_url).is_at_most(200)
+      expect(tutor_account).to validate_length_of(:wechat_idl).is_at_most(200)
     end
 
     it 'requires an occupation' do

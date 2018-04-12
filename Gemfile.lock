@@ -125,6 +125,7 @@ GEM
     mime-types (3.1)
       mime-types-data (~> 3.2015)
     mime-types-data (3.2016.0521)
+    mini_magick (4.2.10)
     mini_mime (1.0.0)
     mini_portile2 (2.3.0)
     minitest (5.11.3)
@@ -244,6 +245,7 @@ DEPENDENCIES
   figaro
   knock
   listen
+  mini_magick
   mongoid (~> 6.2.0)
   mongoid-grid_fs!
   oj

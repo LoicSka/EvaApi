@@ -8,6 +8,9 @@ class Review
   belongs_to :tutor_account
   belongs_to :user
 
+  # scopes
+  scope :sorted, -> { order_by(:created_at => 'desc') }
+
   # validations
   validates :content, presence: true, length: { maximum: 1000 }
 

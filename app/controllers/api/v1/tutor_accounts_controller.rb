@@ -1,10 +1,15 @@
+require 'will_paginate/array'
 class Api::V1::TutorAccountsController < Api::V1::BaseController
   before_action :set_page, only: [:index]
   before_action :set_tutor_account, only: [:show, :edit, :update, :destroy]
-  before_action :authenticate_user # , except: [:create, :update]
+  before_action :authenticate_user , only: [:create, :update]
 
   def index
-    @tutor_accounts = params['page_number'].present? ? TutorAccount.sorted.paginate(:page => @page_number, :per_page => @page_size) : TutorAccount.sorted
+    if params['age_group'].present? && params['subject'].present? && params['price_range'].present?
+       @tutor_accounts = TutorAccount.filter_with(age_group: params['age_group'].to_i, subject: params['subject'], price_range: (params['price_range'][0].to_f..params['price_range'][1].to_f)).paginate(:page => @page_number, :per_page => @page_size)
+    else
+      @tutor_accounts = params['page_number'].present? ? TutorAccount.sorted.paginate(:page => @page_number, :per_page => @page_size) : TutorAccount.sorted
+    end
   end
 
   def show
