@@ -14,6 +14,7 @@ class TutorAccount
   field :renewed_at,            type: Time
   field :expiring_at,           type: Time
   field :membership,            type: String
+  field :district,              type: String
   field :country_of_origin,     type: String
 
   # relationships
@@ -24,7 +25,6 @@ class TutorAccount
 
   # scopes
   scope :sorted, -> { order_by(:created_at => 'desc') }
-  scope :available, -> (days) { where(:days.in => days)}
   # scope :by_subject, -> (subject_id) { where('courses.subject_id' => subject_id)}
   
   # validations
@@ -42,6 +42,9 @@ class TutorAccount
                                 allow_nil: true
   validates :occupation,        presence: true,
                                 inclusion: { in: ['Full-time tutor', 'Part-time tutor'] }
+  validate  :validate_dob
+  validates :district,          allow_nil: true,
+                                length: { maximum: 200 }
   validate  :validate_days_available
   validates :state,             presence: true,
                                 inclusion: { in: %w{ trial inactive active deactivated }}
@@ -52,25 +55,42 @@ class TutorAccount
     end
   end
 
+  def validate_dob
+    errors.add(:dob, "dob cannot be in the future... duh") if dob > Time.now unless dob.nil?
+  end
+
+  # returns highest teaching_experience value from tutor account courses
+  def teaching_experience
+    course = courses.max_by(&:teaching_experience)
+    course.teaching_experience unless course.nil?
+  end
+
   def bookings
-    courses.flat_map { |course| course.bookings }
+    courses.flat_map { |course| course.bookings.accepted }
+  end
+
+  def available?(days)
+    bookings.select { |booking| (booking.time & days).count > 0 }.empty?
   end
 
   def self.find_where_id(id)
     TutorAccount.where(id: id).last
   end
+
   # Filter by subject, returns array of Tutor Accounts objects
   def self.by_subject(subject_id)
     tutor_accounts = []
     Course.where(:subject_id => subject_id).each { |course| tutor_accounts.push(course.tutor_account) unless tutor_accounts.include? course.tutor_account}
     tutor_accounts
   end
+
   # Filter by age group, returns array of Tutor Accounts objects
   def self.by_age_group(age_group)
     tutor_accounts = []
     Course.where(:age_group.in => [age_group, 0]).each {|course| tutor_accounts.push(course.tutor_account) unless tutor_accounts.include? course.tutor_account}
     tutor_accounts
   end
+
   # Filter by price, returns array of Tutor Accounts objects
   def self.by_price_range(price_range)
     tutor_accounts = []
@@ -78,11 +98,17 @@ class TutorAccount
     tutor_accounts
   end
 
-  def self.filter_with(age_group: 0, subject:, price_range:)
-    accounts_by_age_group = TutorAccount.by_age_group(age_group)
-    accounts_by_subject = TutorAccount.by_subject(subject)
-    accounts_price_range = TutorAccount.by_price_range(price_range)
-    accounts_by_age_group & accounts_by_subject & accounts_price_range
+  def self.filter_with(age_group: nil, subject: nil, price_range: nil, available_days: [], region: nil)
+    accounts_by_age_group = age_group.nil? ? [] : TutorAccount.by_age_group(age_group)
+    accounts_by_subject = subject.nil? ? [] : TutorAccount.by_subject(subject)
+    accounts_by_price_range = price_range.nil? ? [] : TutorAccount.by_price_range(price_range)
+    accounts_by_region = region.nil? ? [] : TutorAccount.where(region_id: region)
+    accounts = []
+    [accounts_by_age_group, accounts_by_subject, accounts_by_price_range, accounts_by_region].each do |array|
+      accounts &= array unless array.empty?
+      accounts = array if accounts.empty?
+    end
+    available_days.empty? ? accounts : accounts.select { |account| account.available? available_days }
   end
   
 end

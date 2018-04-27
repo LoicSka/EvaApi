@@ -47,14 +47,14 @@ class Api::V1::UsersController < Api::V1::BaseController
   end
 
   def format_params
-    keys = %w(region_id introduction gender dob phone_number weibo_url wechat_id occupation days_available state renewed_at expiring_at membership country_of_origin)
+    keys = %w(region_id introduction gender dob district phone_number weibo_url wechat_id occupation days_available state renewed_at expiring_at membership country_of_origin)
     params[:tutor_account_attributes] = {}
     params.keys.each { |key| params[:tutor_account_attributes][key] = params[key] if keys.include? key }
   end
 
   # Only allow a trusted parameter "white list" through.
   def user_params
-    params.permit(:first_name, :last_name, :email, :password, :avatar, tutor_account_attributes: [:introduction, :gender, :dob, :phone_number, :weibo_url, :wechat_id, :occupation, :days_available, :state, :renewed_at, :expiring_at, :membership, :country_of_origin, :region_id])
+    params.permit(:first_name, :last_name, :email, :password, :avatar, tutor_account_attributes: [:introduction, :district, :gender, :dob, :phone_number, :weibo_url, :wechat_id, :occupation, :days_available, :state, :renewed_at, :expiring_at, :membership, :country_of_origin, :region_id])
   end
 
 end

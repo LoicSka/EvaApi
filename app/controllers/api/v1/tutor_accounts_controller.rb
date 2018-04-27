@@ -5,13 +5,13 @@ class Api::V1::TutorAccountsController < Api::V1::BaseController
   before_action :authenticate_user , only: [:create, :update]
 
   def index
-    if params['age_group'].present? && params['subject'].present? && params['price_range'].present?
-       @tutor_accounts = TutorAccount.filter_with(age_group: params['age_group'].to_i, subject: params['subject'], price_range: (params['price_range'][0].to_f..params['price_range'][1].to_f)).paginate(:page => @page_number, :per_page => @page_size)
+    if params['age_group'].present? || params['subject'].present? || params['price_range'].present? || params['region'].present? || params['available_days'].present?
+       @tutor_accounts = TutorAccount.filter_with(age_group: params['age_group'].to_i, subject: params['subject'], price_range: params['price_range'].present? ? (params['price_range'][0].to_f..params['price_range'][1].to_f) : nil, region: params['region'], available_days: params['available_days'].present? ? params['available_days'] : []).paginate(:page => @page_number, :per_page => @page_size)
     else
       @tutor_accounts = params['page_number'].present? ? TutorAccount.sorted.paginate(:page => @page_number, :per_page => @page_size) : TutorAccount.sorted
     end
   end
-
+  
   def show
   end
 

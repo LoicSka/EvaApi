@@ -36,8 +36,8 @@ RSpec.describe TutorAccount, type: :model do
       expect(tutor_account).to validate_length_of(:weibo_url).is_at_most(200)
     end
 
-    it 'requires a valid wechat_url' do
-      expect(tutor_account).to validate_length_of(:wechat_idl).is_at_most(200)
+    it 'requires a valid wechat_id' do
+      expect(tutor_account).to validate_length_of(:wechat_id).is_at_most(200)
     end
 
     it 'requires an occupation' do
@@ -45,7 +45,7 @@ RSpec.describe TutorAccount, type: :model do
     end
 
     it 'requires a valid occupation' do
-      expect(tutor_account).to validate_inclusion_of(:occupation).in_array(%w{ professional part-time })
+      expect(tutor_account).to validate_inclusion_of(:occupation).in_array(['Full-time tutor','Part-time tutor'])
     end
 
     it 'requires that past dates be invalid' do
@@ -63,6 +63,28 @@ RSpec.describe TutorAccount, type: :model do
     it 'requires a valid state' do
       expect(tutor_account).to validate_inclusion_of(:state).in_array(%w{ trial inactive active })
     end
-
   end
+
+  context 'methods' do
+    let(:tutor_account) { create(:tutor_account) }
+    let(:user) { create(:user) }
+    # it { expect(tutor_account).to callback(:create_photo).after(:create) }
+     it '.available? returns whether tutor account is booked for given days' do
+      my_course = create(:course)
+      my_course.tutor_account = tutor_account
+      my_user = create(:user)
+      my_booking = Booking.new(time: [Time.new(2018,05,01).to_i], state: 'accepted')
+      my_booking.user = my_user
+      my_booking.course = my_course
+      my_booking.save!
+      expect(tutor_account.available? ([Time.new(2018,05,03).to_i])).to eq(true)
+    end
+
+    it '.teaching_experience? returns highest teaching_experience value from tutor account courses ' do
+      course_1 = create(:course, tutor_account: tutor_account, teaching_experience: 0)
+      course_2 = create(:course, tutor_account: tutor_account, teaching_experience: 3)
+      expect(tutor_account.teaching_experience).to eq(3)
+    end
+  end
+
 end

@@ -24,9 +24,9 @@ RSpec.describe Region, type: :model do
       expect(region).to validate_length_of(:city_name).is_at_most(90)
     end
 
-    it 'requires a location' do
-      expect(region).to validate_presence_of(:location)
-    end
+    # it 'requires a location' do
+    #   expect(region).to validate_presence_of(:location)
+    # end
 
     it 'requires a currency_symbol' do
       expect(region).to validate_presence_of(:currency_symbol)

@@ -6,7 +6,7 @@ FactoryBot.define do
     phone_number    Faker::PhoneNumber.cell_phone
     weibo_url       Faker::Internet.url('weibo.com/users')
     wechat_id       Faker::HarryPotter.character
-    occupation      'professional'
+    occupation      'Full-time tutor'
     days_available  []
     state           'active'
     country_of_origin 'China'
