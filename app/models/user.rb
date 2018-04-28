@@ -16,6 +16,7 @@ class User
   # relationships
   has_one    :tutor_account, dependent: :destroy
   has_many   :reviews,       dependent: :destroy
+  has_many   :students
   has_many   :bookings
   has_and_belongs_to_many :tags
 
@@ -33,7 +34,7 @@ class User
   validates :last_name,      presence: true,
                              length: { maximum: 50 }
   validates :email,  length: { within: 0..100 },
-                     uniqueness: true,
+                    #  uniqueness: true,
                      format: EMAIL_REGEX
   validates :password,       presence: true, length: { within: 4..100 }
 

@@ -10,6 +10,7 @@ class TutorAccount
   field :wechat_id,             type: String
   field :occupation,            type: String
   field :days_available,        type: Array, default: []
+  field :age_group,             type: Integer
   field :state,                 type: String, default: 'trial'
   field :renewed_at,            type: Time
   field :expiring_at,           type: Time
@@ -38,6 +39,7 @@ class TutorAccount
                                 allow_nil: true
   validates :wechat_id,         length: { maximum: 200 },
                                 allow_nil: true
+  validates :age_group,         inclusion: { in: [0,1,2,3,4] },
   validates :country_of_origin, length: { maximum: 200 },
                                 allow_nil: true
   validates :occupation,        presence: true,
