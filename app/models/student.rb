@@ -12,7 +12,7 @@ class Student
   accepts_nested_attributes_for :criteria
 
   # validations
-  validates :fullname, presence: true, length: { maximum: 200 }
+  validates :full_name, presence: true, length: { maximum: 200 }
 
   def self.find_where_id(id)
     Student.where(id: id).last

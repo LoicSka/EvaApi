@@ -39,7 +39,7 @@ class TutorAccount
                                 allow_nil: true
   validates :wechat_id,         length: { maximum: 200 },
                                 allow_nil: true
-  validates :age_group,         inclusion: { in: [0,1,2,3,4] },
+  validates :age_group,         inclusion: { in: [0,1,2,3,4] }
   validates :country_of_origin, length: { maximum: 200 },
                                 allow_nil: true
   validates :occupation,        presence: true,
