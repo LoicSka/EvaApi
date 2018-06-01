@@ -18,6 +18,7 @@ class ApplicationController < ActionController::API; include ActionView::Renderi
   end
 
   def unauthorized_entity(entity_name)
+    # logger.info request.headers['Authorization']
     render 'api/unauthorized'
   end
 

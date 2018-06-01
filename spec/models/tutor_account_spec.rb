@@ -48,14 +48,6 @@ RSpec.describe TutorAccount, type: :model do
       expect(tutor_account).to validate_inclusion_of(:occupation).in_array(['Full-time tutor','Part-time tutor'])
     end
 
-    it 'requires that past dates be invalid' do
-      expect(tutor_account).to_not allow_value([Time.now - 2.days]).for(:days_available)
-    end
-
-    it 'requires a availble days to be in the future' do
-      expect(tutor_account).to allow_value([Time.now + 2.days]).for(:days_available)
-    end
-
     it 'requires a state' do
       expect(tutor_account).to validate_presence_of(:state)
     end

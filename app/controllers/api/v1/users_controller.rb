@@ -1,7 +1,7 @@
 class Api::V1::UsersController < Api::V1::BaseController
   before_action :set_page, only: [:index]
-  before_action :set_user, only: [:show, :update, :destroy]
-  before_action :authenticate_user, except: [:index, :update, :create, :login]
+  before_action :set_user, only: [:show, :update, :destroy, :send_welcome_email, :verify_email]
+  before_action :authenticate_user, except: [:index, :update, :create, :login, :verify_email ]
   before_action :format_params, only: [:update, :create]
 
   def index
@@ -27,6 +27,19 @@ class Api::V1::UsersController < Api::V1::BaseController
     @user.destroy unless @user.nil?
   end
 
+  def send_welcome_email
+    render 'api/v1/users/show.json'
+  end
+
+  def verify_email
+    unless @user.nil?
+      @user.errors.add(:email, 'email verification failed') unless @user.verify_email params[:token]
+      render 'api/v1/users/login.json'
+    else
+      render 'api/unauthorized'
+    end
+  end
+
   def login
     if params[:email].present? && params[:password].present?
       @user = User.where(email: params[:email]).last
@@ -47,14 +60,14 @@ class Api::V1::UsersController < Api::V1::BaseController
   end
 
   def format_params
-    keys = %w(region_id introduction gender dob district phone_number weibo_url wechat_id occupation days_available state renewed_at expiring_at membership country_of_origin)
+    keys = %w(region_id introduction gender dob district phone_number weibo_url wechat_id occupation days_available subject_ids state renewed_at expiring_at membership country_of_origin certifications teaching_experience levels)
     params[:tutor_account_attributes] = {}
     params.keys.each { |key| params[:tutor_account_attributes][key] = params[key] if keys.include? key }
   end
 
   # Only allow a trusted parameter "white list" through.
   def user_params
-    params.permit(:first_name, :last_name, :email, :password, :avatar, tutor_account_attributes: [:introduction, :district, :gender, :dob, :phone_number, :weibo_url, :wechat_id, :occupation, :days_available, :state, :renewed_at, :expiring_at, :membership, :country_of_origin, :region_id])
+    params.permit(:first_name, :last_name, :email, :password, :avatar, tutor_account_attributes: [:introduction, :district, :gender, :dob, :phone_number, :weibo_url, :wechat_id, :occupation, :teaching_experience, :state, :renewed_at, :expiring_at, :membership, :country_of_origin, :region_id, levels: [], subject_ids: [], certifications: [], days_available: []])
   end
 
 end

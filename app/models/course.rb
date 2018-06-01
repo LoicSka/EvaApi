@@ -20,7 +20,7 @@ class Course
 
   # validations
   validates  :teaching_experience, presence: true,
-                                   inclusion: { in: [0,1,2,3] }
+                                   inclusion: { in: [0,1,2,3,4,5] }
   validates  :age_group,  inclusion: { in: [0,1,2,3,4] },
                           allow_nil: true
   validates  :expertise,  inclusion: { in: [0,1,2,3,4] },
@@ -33,7 +33,7 @@ class Course
     Course.where(id: id).last
   end
 
-  def accepted_bookings
+  def self.accepted_bookings
     bookings.accepted
   end
 end

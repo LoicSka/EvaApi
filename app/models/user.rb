@@ -11,20 +11,28 @@ class User
   field :password_hash,                   type: String
   field :password_reset_token,            type: String
   field :password_reset_token_sent_at,    type: Time
+  field :verified,                        type: Boolean, default: false
   field :avatar,                          type: String
+  field :verification_token,              type: String
+
 
   # relationships
   has_one    :tutor_account, dependent: :destroy
-  has_many   :reviews,       dependent: :destroy
+  has_many   :ratings,       dependent: :destroy
   has_many   :students
-  has_many   :bookings
+
   has_and_belongs_to_many :tags
 
   accepts_nested_attributes_for :tutor_account
   mount_uploader	  :avatar, AvatarUploader
 
   # callbacks
+
+  # send welcome email
+  before_create :generate_verification_token
+  # after_create  :send_welcome_email
   before_save   :lowercase_email
+
 
   # validations
   # email regular expression to check email format
@@ -34,7 +42,7 @@ class User
   validates :last_name,      presence: true,
                              length: { maximum: 50 }
   validates :email,  length: { within: 0..100 },
-                    #  uniqueness: true,
+                     uniqueness: true,
                      format: EMAIL_REGEX
   validates :password,       presence: true, length: { within: 4..100 }
 
@@ -57,6 +65,10 @@ class User
     self.password_hash = @password
   end
 
+  def self.from_token_payload(payload)
+    User.where(id: payload['_id']).last
+  end
+
   def to_token_payload
     { id: id, email: email, full_name: full_name, avatar_url: avatar_url, is_tutor: tutor_account.present? }
   end
@@ -71,8 +83,12 @@ class User
   end
 
   # Generate password reset token
-  def generate_token
+  def generate_password_reset_token
     self.password_reset_token = SecureRandom.urlsafe_base64
+  end
+
+  def generate_verification_token
+    self.verification_token = SecureRandom.urlsafe_base64
   end
 
   # lowercase the user email
@@ -84,12 +100,32 @@ class User
     (Rails.env.production? ? "http://localhost:3000/#{avatar.url}" : "http://localhost:3000/#{avatar.url}") if avatar.present?
   end
 
-  def authenticate(unencrypted_password)
-    if Password.new(password_hash) == unencrypted_password
-      return self
-    else
-      return false
+  # def authenticate(unencrypted_password)
+  #   if Password.new(password_hash) == unencrypted_password
+  #     return self
+  #   else
+  #     return false
+  #   end
+  # end
+
+  def send_welcome_email
+    UserMailer.welcome(self).deliver
+  end
+
+  def verify_email(token)
+    if token == verification_token
+      self.verified = true
+      save!
     end
+    verified
+  end
+
+  def verified?
+    verified
+  end
+
+  def tutor?
+    !tutor_account.nil?
   end
 
   def format_created_at

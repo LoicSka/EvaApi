@@ -7,8 +7,8 @@ class Booking
   field :state,             type: String, default: 'pending'
 
   # relationships
-  belongs_to  :user
-  belongs_to  :course
+  belongs_to  :student
+  belongs_to  :tutor_account
 
   # scopes
   scope :sorted, -> { order_by(created_at: 'desc') }

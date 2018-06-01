@@ -16,6 +16,4 @@ class Tag
                      length: { maximum: 500 }
   validates :sub_title, presence: true,
                         length: { maximum: 800 }
-
-
 end
