@@ -1,8 +1,8 @@
 # config valid for current version and patch releases of Capistrano
 lock "~> 3.10.1"
 
-set :application, "evamama"
-set :repo_url, "git@example.com:me/my_repo.git"
+set :application,     "evamama"
+set :repo_url,        "git@github.com:LoicSka/EvaApi.git"
 set :user,            "deployer"
 
 set :deploy_to,       "/home/#{fetch(:user)}/apps/#{fetch(:application)}"
@@ -19,7 +19,8 @@ namespace :deploy do
       execute :touch, release_path.join('tmp/restart.txt')
     end
   end
-
+  Rake::Task['assets:precompile'].clear_actions
+  Rake::Task['assets:backup_manifest'].clear_actions
   before 'deploy:migrate', :setup_environment
   after :publishing, 'deploy:restart'
   after :finishing, 'deploy:cleanup'
