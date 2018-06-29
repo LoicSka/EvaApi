@@ -14,8 +14,9 @@ gem 'oj'
 gem 'knock'
 gem 'will_paginate_mongoid'
 gem 'figaro'
+gem 'fog-aws'
 gem 'mini_magick'
-
+gem 'mailgun-ruby', '~>1.1.6', require: 'mailgun'
 
 group :development, :test do
   gem 'byebug', platforms: [:mri, :mingw, :x64_mingw]
@@ -31,7 +32,7 @@ group :development do
   gem 'capistrano-bundler'
   gem 'capistrano-rails'
   gem 'capistrano-passenger'
-  gem 'capistrano-rbenv', github: 'capistrano/rbenv'
+  gem 'capistrano-rvm', github: "capistrano/rvm"
 end
 
 group :test do

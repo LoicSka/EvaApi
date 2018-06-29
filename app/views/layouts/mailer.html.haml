@@ -1,0 +1,14 @@
+%h3
+    Hi,
+    = @user.first_name
+%p 
+    You have got a new booking from 
+    = @booking.student.fullName
+    The booking is as follows:
+%br/
+%p
+    = @booking.booked_days
+    = @booking.time.strftime("at %I:%M%p") 
+%p Click the link below to see the booking details
+%a(href="localhost:3001/bookings/#{@booking.student.booking_count}/#{@booking.student.id}")
+%p Thank you and have a great day!

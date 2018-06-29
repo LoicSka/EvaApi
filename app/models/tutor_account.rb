@@ -19,20 +19,23 @@ class TutorAccount
   field :country_of_origin,     type: String
   field :teaching_experience,   type: Integer
   field :certifications,        type: Array,  default: []
-  field :last_seen,             type: Hash, default: {}
+  field :last_seen,             type: Hash,   default: {}
+  field :age_groups,            type: Array,  default: []
+  field :hourly_rate,           type: Float,  default: 1
 
   # relationships
-  belongs_to  :user
-  has_many    :ratings, dependent: :destroy
-  has_many    :courses, dependent: :destroy
-  belongs_to  :region
-  has_many    :bookings
+  belongs_to              :user
+  has_many                :ratings, dependent: :destroy
+  has_many                :courses, dependent: :destroy
+  belongs_to              :region
+  has_many                :bookings, dependent: :destroy
   has_and_belongs_to_many :subjects
   has_and_belongs_to_many :students
 
   # scopes
   scope :sorted, -> { order_by(:created_at => 'desc') }
   scope :active, -> { where(:expiring_at.gte => Time.now ) }
+  scope :for_region, -> (region_id) { where(:region_id => region_id ) }
   # scope :by_subject, -> (subject_id) { where('courses.subject_id' => subject_id)}
 
   VALID_LEVELS = [0,1,2,3,4,5,6,7]
@@ -68,12 +71,12 @@ class TutorAccount
   #   course.teaching_experience unless course.nil?
   # end
 
-  def bookings
-    courses.flat_map { |course| course.bookings.accepted }
-  end
+  # def bookings
+  #   courses.flat_map { |course| course.bookings.accepted }
+  # end
 
   def available?(days)
-    bookings.select { |booking| (booking.time & days).count > 0 }.empty?
+    # bookings.select { |booking| (booking.time & days).count > 0 }.empty?
   end
 
   def teaches?(subject)
@@ -88,9 +91,9 @@ class TutorAccount
 
   def match_score(student)
     score = 0
-    return score unless (student == region) && (teaches? student.subject)
+    return score unless (student.region == region) && (teaches? student.subject)
     return score if (student.days_available & days_available).empty?
-    student.criteria.each {|criterion| score += criterion.score_for tutor_account}
+    student.criteria.each { |criterion| score += criterion.score_for(self) }
     score
   end
 
@@ -145,14 +148,27 @@ class TutorAccount
     ratings.count > 0 ? ratings.map { |r| r.value }.sum/ratings.count : 2
   end
 
-  def mark_as_seen(reviews: false)
-    self.last_seen = self.last_seen.merge({reviews: reviews ? Time.now : last_seen.reviews })
+  def mark_as_seen(reviews: false, bookings: false)
+    self.last_seen = self.last_seen.merge({reviews: reviews ? review_count : last_seen[:reviews], bookings: bookings ? booking_count : last_seen[:bookings] })
+    save
   end
 
   # total number of student taught through bookings
   def student_count
-    student_ids = bookings.map { |booking| booking.student_id  }
-    student_ids.uniq
+    student_ids = bookings.confirmed.map { |booking| booking.student_id  }
+    student_ids.uniq.count
+  end
+
+  def review_count
+    Review.for_tutor(self.id).count
+  end
+
+  def booking_count
+    bookings.count
+  end
+
+  def booked_days
+    bookings.confirmed.map { |booking| booking.time }
   end
   
 end

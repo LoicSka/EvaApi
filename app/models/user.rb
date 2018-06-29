@@ -14,12 +14,13 @@ class User
   field :verified,                        type: Boolean, default: false
   field :avatar,                          type: String
   field :verification_token,              type: String
-
+  field :student_ids,                     type: Array, default: []
+  field :locale,                          type: String, default: 'cn'
 
   # relationships
   has_one    :tutor_account, dependent: :destroy
   has_many   :ratings,       dependent: :destroy
-  has_many   :students
+  # has_many   :students
 
   has_and_belongs_to_many :tags
 
@@ -30,9 +31,8 @@ class User
 
   # send welcome email
   before_create :generate_verification_token
-  # after_create  :send_welcome_email
+  after_create  :send_welcome_email
   before_save   :lowercase_email
-
 
   # validations
   # email regular expression to check email format
@@ -54,6 +54,9 @@ class User
     where(email: email).first
   end
 
+  def students
+    student_ids.map { |id| Student.find_where_id(id) }.compact
+  end
   # set up bcrypt gem password encryption
   def password
     @password = Password.new(password_hash) unless password_hash.blank?
@@ -97,16 +100,16 @@ class User
   end
 
   def avatar_url
-    (Rails.env.production? ? "http://localhost:3000/#{avatar.url}" : "http://localhost:3000/#{avatar.url}") if avatar.present?
+    (Rails.env.production? ? "http://d27gl9vrxwy0se.cloudfront.net#{avatar.url}" : "http://localhost:3000#{avatar.url}") if avatar.present?
   end
 
-  # def authenticate(unencrypted_password)
-  #   if Password.new(password_hash) == unencrypted_password
-  #     return self
-  #   else
-  #     return false
-  #   end
-  # end
+  def authenticate(unencrypted_password)
+    if Password.new(password_hash) == unencrypted_password
+      return self
+    else
+      return false
+    end
+  end
 
   def send_welcome_email
     UserMailer.welcome(self).deliver
@@ -130,6 +133,19 @@ class User
 
   def format_created_at
     created_at.to_s(:short_ordinal)
+  end
+
+  # Sending password reset email
+  def send_password_reset
+    generate_token
+    self.password_reset_token_sent_at = Time.zone.now
+    save!
+    UserMailer.password_reset(self).deliver
+  end
+  
+  # Generate password reset token
+  def generate_token
+      self.password_reset_token = SecureRandom.urlsafe_base64
   end
 
 end

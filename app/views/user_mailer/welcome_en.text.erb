@@ -1,0 +1,11 @@
+Hi, <%=@user.first_name%>
+
+Welcome to Eva妈妈.
+Thanks for joining Eva妈妈! Please confirm your email address by clicking on the link below. We'll communicate with you from time to time via email so it's important that we have an up-to-date email address on file.
+
+http://localhost:3001/users/<%= @user.id %>/verify/<%= @user.verification_token %>
+
+If you did not sign up to Eva妈妈, please disregard this email.
+Thank you and have a great day!
+
+The Eva妈妈 team.

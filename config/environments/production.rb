@@ -54,6 +54,17 @@ Rails.application.configure do
   # config.active_job.queue_name_prefix = "tutor_list_#{Rails.env}"
   config.action_mailer.perform_caching = false
 
+  # SMTP settings
+  config.action_mailer.smtp_settings = {
+    :address              => "smtp.mailgun.org",
+    :domain               => ENV['MAIL_GUN_DOMAIN'],
+    :port                 => 587,
+    :user_name            => ENV['MAIL_GUN_USERNAME'],
+    :password             => ENV['MAIL_PASSWORD'],
+    :authentication       => :plain,
+    :enable_starttls_auto => true
+}
+
   # Ignore bad email addresses and do not raise email delivery errors.
   # Set this to true and configure the email server for immediate delivery to raise delivery errors.
   # config.action_mailer.raise_delivery_errors = false

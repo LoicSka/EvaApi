@@ -10,16 +10,16 @@ child @rating, :if => @rating.errors.empty?, :root => "result" do
     child :tutor_account, :object_root => false do
       attributes :id, :rating
     end
-    child :review, :object_root => false do |rating|
+    child :review, :object_root => false do
         attributes :id, :content, :created_at, :updated_at
         node :user do
-            rating.user.full_name
+            @rating.user.full_name
         end
         node :tutor do
-            rating.tutor_account.user.full_name
+            @rating.tutor_account.user.full_name
         end
         node :rating do
-            rating.value
+            @rating.value
         end
     end
 end

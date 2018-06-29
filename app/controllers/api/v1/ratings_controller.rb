@@ -8,14 +8,13 @@ class Api::V1::RatingsController < Api::V1::BaseController
 
   def create
     @rating = Rating.find_or_initialize_by(ratings_params.slice(:user_id, :tutor_account_id))
-    @rating.review_attributes = params[:review_attributes]
-    @rating.value = params.value
+    @rating.attributes = ratings_params
     @rating.save
   end
 
   private
 
   def ratings_params
-    params.permit(:value, :user_id, :tutor_account_id, review_attributes: [:content])
+    params.permit(:value, :user_id, :tutor_account_id, review_attributes: [:content, :tutor_account_id])
   end
-end
+end 

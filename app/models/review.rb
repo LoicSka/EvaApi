@@ -9,7 +9,7 @@ class Review
   belongs_to :rating
 
   # scopes
-  scope :for_tutor, -> (tutor_account_id) { for_js("this.tutor_account_id = tutor_account_id", tutor_account_id: tutor_account_id)}
+  scope :for_tutor, -> (tutor_account_id) { where(tutor_account_id: tutor_account_id) }
   scope :sorted, -> { order_by(:created_at => 'desc') }
 
   # validations

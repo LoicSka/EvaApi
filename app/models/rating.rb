@@ -21,7 +21,7 @@ class Rating
   validate :validate_eligibility
 
   def validate_eligibility
-    errors.add(:user, 'eligibility') unless is_eligible? user
+    # errors.add(:user, 'eligibility') unless is_eligible? user
   end
 
   def self.find_where_id(id)
@@ -29,11 +29,11 @@ class Rating
   end
 
   def review_id
-    review.id
+    review.id unless review.nil?
   end
 
   def self.seed
-    Rating.delete_all
+    # Rating.delete_all
     TutorAccount.all.each do |tutor|
       User.all.each do |user|
         Rating.create(value: (1..5).to_a.sample, user: user, tutor_account: tutor, review_attributes: {content: 'Well well well well, nice try...'})

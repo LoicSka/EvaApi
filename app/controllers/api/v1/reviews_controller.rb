@@ -2,7 +2,7 @@ class Api::V1::ReviewsController < Api::V1::BaseController
   before_action :set_page, only: [:index, :for_tutor]
   before_action :set_review, only: [:show, :edit, :update, :destroy]
   before_action :authenticate_user # , except: [:create, :update]
-  after_action :mark_as_seen, only: [:index, :for_tutor]
+  after_action  :mark_as_seen, only: [:index, :for_tutor]
 
   def index
     @reviews = params['page_number'].present? ? Review.sorted.paginate(:page => @page_number, :per_page => @page_size) : Review.sorted

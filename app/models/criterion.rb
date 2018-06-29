@@ -26,11 +26,11 @@ class Criterion
   def score_for(tutor_account)
     case type
     when 'AGE_GROUP'
-      return value_for(value: tutor_account.age_group)
+      return value_for(value: tutor_account.age_groups)
     when 'TUTOR_GENDER'
       return value_for(value: tutor_account.gender, correct: 5)
     when 'CURRENT_LEVEL'
-      return value_for(value: tutor_account.level, neutral: nil)
+      return value_for(value: tutor_account.levels, neutral: nil)
     when 'DISTRICT'
       return value_for(value: tutor_account.district)
     when 'WEAK_POINTS'
@@ -40,7 +40,6 @@ class Criterion
       return 0
     end
   end
-
 
   def value_for(value:, neutral: 0, correct: 2, incorrect: 0)
     return correct if values.include? value
