@@ -1,7 +1,7 @@
 class Api::V1::UsersController < Api::V1::BaseController
   before_action :set_page, only: [:index]
   before_action :set_user, only: [:show, :update, :destroy, :send_welcome_email, :verify_email]
-  before_action :authenticate_user, except: [:index, :update, :create, :login, :verify_email, :send_welcome_email ]
+  before_action :authenticate_user, except: [:update, :create, :login, :verify_email, :send_welcome_email ]
   before_action :format_params, only: [:update, :create]
 
   def index
