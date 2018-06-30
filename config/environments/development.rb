@@ -34,10 +34,10 @@ Rails.application.configure do
   # SMTP settings
   config.action_mailer.smtp_settings = {
       :address              => "smtp.mailgun.org",
-      :domain               => ENV['domain'],
+      :domain               => ENV['MAIL_GUN_DOMAIN'],
       :port                 => 587,
-      :user_name            => ENV['username'],
-      :password             => ENV['password'],
+      :user_name            => ENV['MAIL_GUN_USERNAME'],
+      :password             => ENV['MAIL_PASSWORD'],
       :authentication       => :plain,
       :enable_starttls_auto => true
   }
