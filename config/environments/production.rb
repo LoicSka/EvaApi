@@ -60,7 +60,7 @@ Rails.application.configure do
     :domain               => ENV['MAIL_GUN_DOMAIN'],
     :port                 => 587,
     :user_name            => ENV['MAIL_GUN_USERNAME'],
-    :password             => ENV['MAIL_PASSWORD'],
+    :password             => ENV['MAIL_GUN_PASSWORD'],
     :authentication       => :plain,
     :enable_starttls_auto => true
 }
