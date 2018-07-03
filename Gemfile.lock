@@ -7,12 +7,12 @@ GIT
       mongoid (>= 3.0, < 7.0)
 
 GIT
-  remote: git://github.com/capistrano/rvm.git
-  revision: 9cfef39cf0022839dca6b5b330dfefeb5fc363e7
+  remote: git://github.com/capistrano/rbenv.git
+  revision: c029e4128e4a8f25adda35795f5729bd4f62e51f
   specs:
-    capistrano-rvm (0.1.2)
-      capistrano (~> 3.0)
-      sshkit (~> 1.2)
+    capistrano-rbenv (2.1.3)
+      capistrano (~> 3.1)
+      sshkit (~> 1.3)
 
 GEM
   remote: https://rubygems.org/
@@ -271,7 +271,7 @@ DEPENDENCIES
   capistrano-bundler
   capistrano-passenger
   capistrano-rails
-  capistrano-rvm!
+  capistrano-rbenv!
   carrierwave-mongoid
   database_cleaner
   factory_bot_rails
@@ -299,4 +299,4 @@ DEPENDENCIES
   will_paginate_mongoid
 
 BUNDLED WITH
-   1.16.1
+   1.16.2
