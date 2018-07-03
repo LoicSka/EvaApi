@@ -42,6 +42,7 @@ class Api::V1::UsersController < Api::V1::BaseController
   end
 
   def seed
+    User.delete_all
     Region.seed
     Subject.seed
     render json: {'status': 'Ok'}
