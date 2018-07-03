@@ -24,6 +24,8 @@ class Subject
   def self.seed
     Subject.delete_all
     Subject.create(title: ['English', '英语'])
+    Subject.create(title: ['French', '法语'])
+    Subject.create(title: ['Spanish', '西班牙语'])
   end
 
 end

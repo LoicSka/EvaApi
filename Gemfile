@@ -32,7 +32,7 @@ group :development do
   gem 'capistrano-bundler'
   gem 'capistrano-rails'
   gem 'capistrano-passenger'
-  gem 'capistrano-rbenv', github: "capistrano/rbenv"
+  gem 'capistrano-rvm', github: "capistrano/rvm"
 end
 
 group :test do

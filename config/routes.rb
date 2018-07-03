@@ -23,6 +23,7 @@ Rails.application.routes.draw do
       get '/bookings/student/:student_id' => 'bookings#index', as: :bookings_for_student
       get '/bookings/user/:user_id' => 'bookings#index', as: :bookings_for_user
       get '/students/user/:user_id' => 'students#index', as: :students_for_user
+      post '/seed' => 'users#seed', as: :seed
     end
   end
 end

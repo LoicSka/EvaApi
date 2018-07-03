@@ -1,7 +1,7 @@
 class Api::V1::UsersController < Api::V1::BaseController
   before_action :set_page, only: [:index]
   before_action :set_user, only: [:show, :update, :destroy, :send_welcome_email, :verify_email]
-  before_action :authenticate_user, except: [:update, :create, :login, :verify_email, :send_welcome_email ]
+  before_action :authenticate_user, except: [:update, :create, :login, :verify_email, :send_welcome_email, :seed ]
   before_action :format_params, only: [:update, :create]
 
   def index
@@ -39,6 +39,12 @@ class Api::V1::UsersController < Api::V1::BaseController
     else
       render 'api/unauthorized'
     end
+  end
+
+  def seed
+    Region.seed
+    Subject.seed
+    render json: {'status': 'Ok'}
   end
 
   def login
