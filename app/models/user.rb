@@ -105,7 +105,7 @@ class User
 
   def authenticate(unencrypted_password)
     if Password.new(password_hash) == unencrypted_password
-      return self
+    return self
     else
       return false
     end
