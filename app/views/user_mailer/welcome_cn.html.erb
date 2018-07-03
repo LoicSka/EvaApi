@@ -5,13 +5,16 @@
       Hi <%=@user.first_name%>,
       </p>
       <p style="font-family:&quot;Helvetica Neue&quot;,Helvetica,Arial,&quot;Lucida Grande&quot;,sans-serif;font-size:14px;font-weight:normal;margin:0;margin-bottom:15px;padding:0">
-      <%=@booking.tutor_account.user.full_name%> Has confirmed your booking made on the <%=@booking.created_at.strftime("%m/%d/%Y") %>
+      Welcome to Eva妈妈.
+      </p>
+      <p style="font-family:&quot;Helvetica Neue&quot;,Helvetica,Arial,&quot;Lucida Grande&quot;,sans-serif;font-size:14px;font-weight:normal;margin:0;margin-bottom:15px;padding:0">
+      Thanks for joining Eva妈妈! Please confirm your email address by clicking on the link below. We'll communicate with you from time to time via email so it's important that we have an up-to-date email address on file.
       </p>
       <p>
-      Click the link below to see the booking details
+      Click the link below to verify your email address
       </p>
       <p>
-      <strong><a href="https://evamama.com/bookings/<%=@booking.student.booking_count%>/<%=@booking.student.id%>" style="box-sizing:border-box;color:#5087F5;font-weight:bold;text-decoration:underline" target="_blank">Click here to see booking details.</a></strong>
+      <strong><a href="https://evamama.com/users/<%= @user.id %>/verify/<%= @user.verification_token %>" style="box-sizing:border-box;color:#5087F5;font-weight:bold;text-decoration:underline" target="_blank">Click this link to confirm.</a>.</strong>
       </p>
       <p style="font-family:&quot;Helvetica Neue&quot;,Helvetica,Arial,&quot;Lucida Grande&quot;,sans-serif;font-size:14px;font-weight:normal;margin:0;margin-bottom:15px;padding:0">With love,</p>
       <p style="font-family:&quot;Helvetica Neue&quot;,Helvetica,Arial,&quot;Lucida Grande&quot;,sans-serif;font-size:14px;font-weight:normal;margin:0;margin-bottom:15px;padding:0">The Eva妈妈 team.</p>
