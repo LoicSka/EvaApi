@@ -24,7 +24,7 @@ class Course
   validates  :age_group,  inclusion: { in: [0,1,2,3,4] },
                           allow_nil: true
   validates  :expertise,  inclusion: { in: [0,1,2,3,4] },
-                            allow_nil: true
+                          allow_nil: true
   validates  :title,     presence: true,
                          length: { maximum: 200 }
   validates  :description,     allow_nil: true,

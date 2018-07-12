@@ -28,7 +28,6 @@ class User
   mount_uploader	  :avatar, AvatarUploader
 
   # callbacks
-
   # send welcome email
   before_create :generate_verification_token
   after_create  :send_welcome_email
@@ -100,7 +99,9 @@ class User
   end
 
   def avatar_url
-    (Rails.env.production? ? "http://d27gl9vrxwy0se.cloudfront.net#{avatar.url}" : "http://localhost:3000#{avatar.url}") if avatar.present?
+    image_path = avatar.url.split('.com').last unless avatar.nil?
+    "http://d27gl9vrxwy0se.cloudfront.net#{image_path}"
+    # (Rails.env.production? ? "http://d27gl9vrxwy0se.cloudfront.net#{avatar.url}" : "http://localhost:3000#{avatar.url}") if avatar.present?
   end
 
   def authenticate(unencrypted_password)
