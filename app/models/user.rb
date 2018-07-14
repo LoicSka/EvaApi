@@ -99,7 +99,7 @@ class User
   end
 
   def avatar_url
-    image_path = avatar.url.split('.com').last unless avatar.nil?
+    image_path = avatar.url.split('.com').last unless avatar.url.nil?
     "http://d27gl9vrxwy0se.cloudfront.net#{image_path}"
     # (Rails.env.production? ? "http://d27gl9vrxwy0se.cloudfront.net#{avatar.url}" : "http://localhost:3000#{avatar.url}") if avatar.present?
   end
